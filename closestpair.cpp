@@ -107,7 +107,13 @@ double ClosestPair(std::vector<point> data)
     return ClosestPairRet(data).distance;
 }
 
-double PrintClosestPair(std::vector<point> data)
+void PrintClosestPair(std::vector<point> data)
+{
+    ret info = ClosestPairRet(data);
+    cout << "It did " << info.operations << " operations." << endl;
+}
+
+double PrintRetClosestPair(std::vector<point> data)
 {
     ret info = ClosestPairRet(data);
     cout << "It did " << info.operations << " operations." << endl;
