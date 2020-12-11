@@ -35,6 +35,7 @@ bool compare_y(const point &n1, const point &n2)
     return n1.y < n2.y;
 }
 
+// more or less the function from the book
 ret ClosestPairLong(const vector<point> &data_x, const vector<point> &data_y, input stuff)
 {
     int size = stuff.end_pos - stuff.start_pos;
@@ -51,24 +52,28 @@ ret ClosestPairLong(const vector<point> &data_x, const vector<point> &data_y, in
         return {d, stuff.curr_operations};
     }
     int midpoint = stuff.end_pos - size / 2;
+    //new y vector 1
     vector<point> q_1;
     for (int i = stuff.start_pos; i < midpoint; ++i)
     {
         q_1.push_back(data_x[i]);
     }
     sort(q_1.begin(), q_1.end(), compare_y);
+    //new y vector 2
     vector<point> q_2;
     for (int i = midpoint; i < stuff.end_pos; ++i)
     {
         q_2.push_back(data_x[i]);
     }
     sort(q_2.begin(), q_2.end(), compare_y);
+    //recursive calls
     stuff.curr_operations++;
     input new_1 = {stuff.start_pos, midpoint, stuff.curr_operations};
     stuff.curr_operations++;
     input new_2 = {midpoint, stuff.end_pos, stuff.curr_operations};
     ret d_1 = ClosestPairLong(data_x, q_1, new_1);
     ret d_2 = ClosestPairLong(data_x, q_2, new_2);
+    //the rest
     double d = min(d_1.distance, d_2.distance);
     double dd = pow(d, 2);
     int x_of_mid = data_x[midpoint].x;
@@ -93,6 +98,7 @@ ret ClosestPairLong(const vector<point> &data_x, const vector<point> &data_y, in
     return {sqrt(dd), d_1.operations + d_2.operations};
 }
 
+// jumper function
 ret ClosestPairRet(vector<point> &data)
 {
     vector<point> data_y = data;
@@ -101,18 +107,22 @@ ret ClosestPairRet(vector<point> &data)
     return ClosestPairLong(data, data_y, {0, data.size(), 0});
 }
 
-// end internal functions
+//************************* end internal functions ***************************
+
+// normal
 double ClosestPair(std::vector<point> data)
 {
     return ClosestPairRet(data).distance;
 }
 
+//prints the number operation 
 void PrintClosestPair(std::vector<point> data)
 {
     ret info = ClosestPairRet(data);
     cout << "It did " << info.operations << " operations." << endl;
 }
 
+// prints and return a value... so side effects
 double PrintRetClosestPair(std::vector<point> data)
 {
     ret info = ClosestPairRet(data);
@@ -120,6 +130,7 @@ double PrintRetClosestPair(std::vector<point> data)
     return info.distance;
 }
 
+// returns the number of operations.
 int ClosestPairOperations(std::vector<point> data)
 {
     return ClosestPairRet(data).operations;
