@@ -30,3 +30,6 @@
 *.exe
 *.out
 *.app
+
+# me files
+*.vscode
