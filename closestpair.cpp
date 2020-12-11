@@ -1,19 +1,18 @@
-#include <vector>
-using std::vector;
-#include <algorithm>
-using std::min;
-using std::sort;
+#include "closestpair.h"
 #include <cmath>
+#include <algorithm>
+#include <iostream>
 using std::abs;
+using std::cin;
+using std::cout;
+using std::endl;
+using std::min;
 using std::pow;
+using std::sort;
 using std::sqrt;
+using std::vector;
 
-struct point
-{
-    int x;
-    int y;
-};
-
+// internal use functions
 struct ret
 {
     double distance;
@@ -27,15 +26,6 @@ struct input
     int curr_operations = 0;
 };
 
-ret ClosestPair(vector<point> data);
-ret ClosestPair(const vector<point> &data_x, const vector<point> &data_y, input input);
-
-int main()
-{
-    // ClosestPair();
-    return 0;
-}
-
 bool compare_x(const point &n1, const point &n2)
 {
     return n1.x < n2.x;
@@ -46,12 +36,12 @@ bool compare_y(const point &n1, const point &n2)
     return n1.y < n2.y;
 }
 
-ret ClosestPair(vector<point> data)
+ret ClosestPairRet(vector<point> &data)
 {
     vector<point> data_y = data;
     sort(data.begin(), data.end(), compare_x);
     sort(data_y.begin(), data_y.end(), compare_y);
-    ClosestPair(data, data_y, {0, data.size(), 0});
+    return ClosestPair(data, data_y, {0, data.size(), 0});
 }
 
 ret ClosestPair(const vector<point> &data_x, const vector<point> &data_y, input stuff)
@@ -110,4 +100,22 @@ ret ClosestPair(const vector<point> &data_x, const vector<point> &data_y, input 
         }
     }
     return {sqrt(dd), d_1.operations + d_2.operations};
+}
+
+// end internal functions
+double ClosestPair(std::vector<point> data)
+{
+    return ClosestPairRet(data).distance;
+}
+
+double PrintClosestPair(std::vector<point> data)
+{
+    ret info = ClosestPairRet(data);
+    cout << "It did " << info.operations << " operations." << endl;
+    return info.distance;
+}
+
+int ClosestPairOperations(std::vector<point> data)
+{
+    return ClosestPairRet(data).operations;
 }
