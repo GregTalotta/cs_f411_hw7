@@ -3,7 +3,6 @@
 #include <algorithm>
 #include <iostream>
 using std::abs;
-using std::cin;
 using std::cout;
 using std::endl;
 using std::min;
@@ -36,15 +35,7 @@ bool compare_y(const point &n1, const point &n2)
     return n1.y < n2.y;
 }
 
-ret ClosestPairRet(vector<point> &data)
-{
-    vector<point> data_y = data;
-    sort(data.begin(), data.end(), compare_x);
-    sort(data_y.begin(), data_y.end(), compare_y);
-    return ClosestPair(data, data_y, {0, data.size(), 0});
-}
-
-ret ClosestPair(const vector<point> &data_x, const vector<point> &data_y, input stuff)
+ret ClosestPairLong(const vector<point> &data_x, const vector<point> &data_y, input stuff)
 {
     int size = stuff.end_pos - stuff.start_pos;
     if (size <= 3)
@@ -76,8 +67,8 @@ ret ClosestPair(const vector<point> &data_x, const vector<point> &data_y, input 
     input new_1 = {stuff.start_pos, midpoint, stuff.curr_operations};
     stuff.curr_operations++;
     input new_2 = {midpoint, stuff.end_pos, stuff.curr_operations};
-    ret d_1 = ClosestPair(data_x, q_1, new_1);
-    ret d_2 = ClosestPair(data_x, q_2, new_2);
+    ret d_1 = ClosestPairLong(data_x, q_1, new_1);
+    ret d_2 = ClosestPairLong(data_x, q_2, new_2);
     double d = min(d_1.distance, d_2.distance);
     double dd = pow(d, 2);
     int x_of_mid = data_x[midpoint].x;
@@ -100,6 +91,14 @@ ret ClosestPair(const vector<point> &data_x, const vector<point> &data_y, input 
         }
     }
     return {sqrt(dd), d_1.operations + d_2.operations};
+}
+
+ret ClosestPairRet(vector<point> &data)
+{
+    vector<point> data_y = data;
+    sort(data.begin(), data.end(), compare_x);
+    sort(data_y.begin(), data_y.end(), compare_y);
+    return ClosestPairLong(data, data_y, {0, data.size(), 0});
 }
 
 // end internal functions
