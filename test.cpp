@@ -7,8 +7,11 @@ using std::endl;
 
 int main()
 {
-    vector<point> my_data = {{2, 3}, {12, 30}, {40, 50}, {5, 1}, {12, 10}, {3, 4}}; //got this from the geeksforgeels example
+    cout << "The geeks for geeks dataset." << endl;
+    vector<point> my_data = {{2, 3}, {12, 30}, {40, 50}, {5, 1}, {12, 10}, {3, 4}};
     double thing = PrintRetClosestPair(my_data);
-    cout << thing << endl;
+    cout << "The correct answer is: 1.414214   You got: " << thing << endl;
+    // I need more testing data, and I am not calculating it by hand...
+    // I guess I can write a brute force and compare the answers.
     return 0;
 }

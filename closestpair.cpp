@@ -11,7 +11,7 @@ using std::sort;
 using std::sqrt;
 using std::vector;
 
-// internal use functions
+// *******************internal use functions***************
 struct ret
 {
     double distance;
@@ -36,7 +36,7 @@ bool compare_y(const point &n1, const point &n2)
 }
 
 // more or less the function from the book
-ret ClosestPairLong(const vector<point> &data_x, const vector<point> &data_y, input stuff)
+ret ClosestPairLong(const vector<point> &p, const vector<point> &q, input stuff)
 {
     int size = stuff.end_pos - stuff.start_pos;
     if (size <= 3)
@@ -46,7 +46,8 @@ ret ClosestPairLong(const vector<point> &data_x, const vector<point> &data_y, in
         {
             for (int j = i + 1; j < stuff.end_pos; ++j)
             {
-                d = min(d, sqrt(pow((data_x[i].x - data_x[j].x), 2) + pow((data_x[i].y - data_x[j].y), 2)));
+                stuff.curr_operations++;
+                d = min(d, sqrt(pow((p[i].x - p[j].x), 2) + pow((p[i].y - p[j].y), 2)));
             }
         }
         return {d, stuff.curr_operations};
@@ -56,33 +57,31 @@ ret ClosestPairLong(const vector<point> &data_x, const vector<point> &data_y, in
     vector<point> q_1;
     for (int i = stuff.start_pos; i < midpoint; ++i)
     {
-        q_1.push_back(data_x[i]);
+        q_1.push_back(p[i]);
     }
     sort(q_1.begin(), q_1.end(), compare_y);
     //new y vector 2
     vector<point> q_2;
     for (int i = midpoint; i < stuff.end_pos; ++i)
     {
-        q_2.push_back(data_x[i]);
+        q_2.push_back(p[i]);
     }
     sort(q_2.begin(), q_2.end(), compare_y);
     //recursive calls
-    stuff.curr_operations++;
     input new_1 = {stuff.start_pos, midpoint, stuff.curr_operations};
-    stuff.curr_operations++;
     input new_2 = {midpoint, stuff.end_pos, stuff.curr_operations};
-    ret d_1 = ClosestPairLong(data_x, q_1, new_1);
-    ret d_2 = ClosestPairLong(data_x, q_2, new_2);
+    ret d_1 = ClosestPairLong(p, q_1, new_1);
+    ret d_2 = ClosestPairLong(p, q_2, new_2);
     //the rest
     double d = min(d_1.distance, d_2.distance);
     double dd = pow(d, 2);
-    int x_of_mid = data_x[midpoint].x;
+    int x_of_mid = p[midpoint].x;
     vector<point> s;
     for (int i = stuff.start_pos; i < stuff.end_pos; ++i)
     {
-        if (abs(data_y[i].x - x_of_mid) < d)
+        if (abs(q[i].x - x_of_mid) < d)
         {
-            s.push_back(data_y[i]);
+            s.push_back(q[i]);
         }
     }
     int k = 0;
@@ -91,20 +90,21 @@ ret ClosestPairLong(const vector<point> &data_x, const vector<point> &data_y, in
         k = i + 1;
         while ((k <= s.size() - 1) && (pow(s[k].y - s[i].y, 2) < dd))
         {
+            stuff.curr_operations++;
             dd = min(((double)s[k].x - (double)s[i].x) + ((double)s[k].y - (double)s[i].y), dd);
             ++k;
         }
     }
-    return {sqrt(dd), d_1.operations + d_2.operations};
+    return {sqrt(dd), d_1.operations + d_2.operations + stuff.curr_operations};
 }
 
 // jumper function
 ret ClosestPairRet(vector<point> &data)
 {
-    vector<point> data_y = data;
+    vector<point> q = data;
     sort(data.begin(), data.end(), compare_x);
-    sort(data_y.begin(), data_y.end(), compare_y);
-    return ClosestPairLong(data, data_y, {0, data.size(), 0});
+    sort(q.begin(), q.end(), compare_y);
+    return ClosestPairLong(data, q, {0, (int)data.size(), 0});
 }
 
 //************************* end internal functions ***************************
@@ -115,7 +115,7 @@ double ClosestPair(std::vector<point> data)
     return ClosestPairRet(data).distance;
 }
 
-//prints the number operation 
+// prints the number of operations.
 void PrintClosestPair(std::vector<point> data)
 {
     ret info = ClosestPairRet(data);
