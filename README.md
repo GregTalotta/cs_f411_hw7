@@ -4,7 +4,10 @@ cs_f411_hw7
 
 ## What is it?
 
-C++ implementation of closest pair, that also tracks how many operations it did.
+C++ divide and conquer implementation of closest pair, that also tracks how many
+operations it did. It is based on the algorithm outlined in Levitin Anany.
+Introduction to the Design and Analysis of Algorithms (p. 195). Pearson
+Education. Kindle Edition.
 
 ## How to Use
 
