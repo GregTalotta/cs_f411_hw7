@@ -74,32 +74,35 @@ result_type dc_cp(const vector<point> &p, const vector<point> &q, info increment
     }
     sort(q_2.begin(), q_2.end(), compare_y);
     //recursive calls
-    info new_1 = {increment_data.start_pos, midpoint, increment_data.curr_operations};
-    info new_2 = {midpoint, increment_data.end_pos, increment_data.curr_operations};
+    info new_1 = {increment_data.start_pos, midpoint, increment_data.curr_operations}; //start..mid
+    info new_2 = {midpoint, increment_data.end_pos, increment_data.curr_operations};   //mid..end
     result_type d_1 = dc_cp(p, q_1, new_1);
     result_type d_2 = dc_cp(p, q_2, new_2);
     //the rest
     double d = min(d_1.distance, d_2.distance);
-    double dd = pow(d, 2);
-    int x_of_mid = p[midpoint].x;
+    int m = p[midpoint].x;
     vector<point> s;
     int num = 1;
-    for (int i = increment_data.start_pos; i < increment_data.end_pos; ++i)
+    for (auto iter : q)
     {
-        if (abs(q[i].x - x_of_mid) < d)
+        increment_data.curr_operations++;
+        if (abs(iter.x - m) < d)
         {
-            s.push_back(q[i]);
+            s.push_back(iter);
             ++num;
         }
     }
+    double dd = pow(d, 2);
     int k = 0;
     for (int i = 0; i <= num - 2; ++i)
     {
-        for (k = i + 1; ((k <= num - 1) && (pow((double)s[k].y - (double)s[i].y, 2) < dd)); ++k) //I changed this from the book
+        k = i + 1;
+        while ((k <= num - 1) && (pow((double)s[k].y - (double)s[i].y, 2) < dd)) //I changed this from the book
         {
             increment_data.curr_operations++;
-            double distance = pow(((double)s[k].x - (double)s[i].x), 2) + pow(((double)s[k].y - (double)s[i].y), 2);
+            double distance = pow((s[k].x - s[i].x), 2) + pow((s[k].y - s[i].y), 2);
             dd = min(distance, dd);
+            ++k;
         }
     }
     return {sqrt(dd), d_1.operations + d_2.operations + increment_data.curr_operations};
@@ -146,5 +149,7 @@ int closestPairOperations(std::vector<point> data)
 
 double brute_force_cp(std::vector<point> data)
 {
-    return bf_cp(data, {0, (int)data.size(), 0}).distance;
+    result_type info = bf_cp(data, {0, (int)data.size(), 0});
+    cout << "Brute did " << info.operations << " operations." << endl;
+    return info.distance;
 }

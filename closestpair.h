@@ -1,7 +1,6 @@
 #ifndef FILE_CLOSESTPAIR_H_INCLUDED
 #define FILE_CLOSESTPAIR_H_INCLUDED
 
-
 #include <vector>
 
 struct point
