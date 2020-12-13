@@ -48,7 +48,7 @@ result_type ClosestPairLong(const vector<point> &p, const vector<point> &q, info
             for (int j = i + 1; j < increment_data.end_pos; ++j)
             {
                 increment_data.curr_operations++;
-                d = min(d, sqrt(pow((p[i].x - p[j].x), 2) + pow((p[i].y - p[j].y), 2)));
+                d = min(d, sqrt(pow(((double)p[i].x - (double)p[j].x), 2) + pow(((double)p[i].y - (double)p[j].y), 2)));
             }
         }
         return {d, increment_data.curr_operations};
@@ -78,22 +78,23 @@ result_type ClosestPairLong(const vector<point> &p, const vector<point> &q, info
     double dd = pow(d, 2);
     int x_of_mid = p[midpoint].x;
     vector<point> s;
+    int num = 1;
     for (int i = increment_data.start_pos; i < increment_data.end_pos; ++i)
     {
         if (abs(q[i].x - x_of_mid) < d)
         {
             s.push_back(q[i]);
+            ++num;
         }
     }
     int k = 0;
-    for (int i = 0; i <= s.size() - 2; ++i)
+    for (int i = 0; i <= num - 2; ++i)
     {
-        k = i + 1;
-        while ((k <= s.size() - 1) && (pow(s[k].y - s[i].y, 2) < dd))
+       for(k = i +1; ((k <= num - 1) && (pow((double)s[k].y - (double)s[i].y, 2) < dd)); ++ k) //I changed this from the book
         {
             increment_data.curr_operations++;
-            dd = min(((double)s[k].x - (double)s[i].x) + ((double)s[k].y - (double)s[i].y), dd);
-            ++k;
+            double distance = pow(((double)s[k].x - (double)s[i].x),2) + pow(((double)s[k].y - (double)s[i].y),2);
+            dd = min(distance, dd);
         }
     }
     return {sqrt(dd), d_1.operations + d_2.operations + increment_data.curr_operations};
@@ -105,7 +106,8 @@ result_type ClosestPairRet(vector<point> &data)
     vector<point> q = data;
     sort(data.begin(), data.end(), compare_x);
     sort(q.begin(), q.end(), compare_y);
-    return ClosestPairLong(data, q, {0, (int)data.size(), 0});
+    result_type answer = ClosestPairLong(data, q, {0, (int)data.size(), 0});
+    return answer;
 }
 
 //************************* end internal functions ***************************
