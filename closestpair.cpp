@@ -2,6 +2,7 @@
 #include <cmath>
 #include <algorithm>
 #include <iostream>
+#include <limits>
 using std::abs;
 using std::cout;
 using std::endl;
@@ -41,7 +42,7 @@ result_type ClosestPairLong(const vector<point> &p, const vector<point> &q, info
     int size = increment_data.end_pos - increment_data.start_pos;
     if (size <= 3)
     {
-        double d = 1000000000000000000.0; //ok not the best way to do it.
+        double d = std::numeric_limits<double>::max();
         for (int i = increment_data.start_pos; i < increment_data.end_pos - 1; ++i)
         {
             for (int j = i + 1; j < increment_data.end_pos; ++j)
