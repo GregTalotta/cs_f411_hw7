@@ -1,13 +1,17 @@
 cs_f411_hw7
 
-# Closest pair
-## what is it?
+# Closest Pair
+
+## What is it?
+
 C++ implementation of closest pair, that also tracks how many operations it did.
 
-## how to use
-First include the header in your file.
-Call one of the four functions with a list of vector of points. 
-Point is a struct that has an int for x, and an int for y.
+## How to Use
+
+First include the header in your file. Call one of the four functions with a
+list of vector of points. Point is a struct that has an int for x, and an int
+for y.
+
 ```c++
 struct point
 {
@@ -15,6 +19,7 @@ struct point
     int y;
 };
 ```
+
 1. ClosestPair()
     1. Returns a double that is the distance between the closest pair.
 1. PrintClosestPair()
@@ -24,5 +29,6 @@ struct point
 1. PrintRetClosestPair()
     1. Prints the number of operations and returns the distance.
 
-# Use my testing file.
-For a quick way to run the code, modify or run my test.cpp. 
+# Use my Testing File.
+
+For a quick way to run the code, modify or run my test.cpp.
