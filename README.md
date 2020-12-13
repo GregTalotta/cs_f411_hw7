@@ -15,11 +15,11 @@ struct point
     int y;
 };
 ```
-1. double ClosestPair
+1. ClosestPair()
     1. Returns a double that is the distance between the closest pair.
-1. void PrintClosestPair
+1. PrintClosestPair()
     1. Returns nothing, but prints the number of operations done.
-1. int ClosestPairOperations
+1. ClosestPairOperations()
     1. Returns an int that is the number of operations done.
-1. double PrintRetClosestPair
+1. PrintRetClosestPair()
     1. Prints the number of operations and returns the distance.
