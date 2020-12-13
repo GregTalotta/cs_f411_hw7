@@ -23,3 +23,6 @@ struct point
     1. Returns an int that is the number of operations done.
 1. PrintRetClosestPair()
     1. Prints the number of operations and returns the distance.
+
+# Use my testing file.
+For a quick way to run the code, modify or run my test.cpp. 
