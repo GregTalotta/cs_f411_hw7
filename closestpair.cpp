@@ -88,7 +88,7 @@ result_type dc_cp(const vector<point> &p, const vector<point> &q, info increment
     int m = p[midpoint].x;
     double dd = pow(d, 2);
     vector<point> s;
-    int num = 1;
+    int num = 0;
     for (auto iter : q)
     {
         increment_data.curr_operations++;
@@ -101,10 +101,10 @@ result_type dc_cp(const vector<point> &p, const vector<point> &q, info increment
     int k = 0;
     if (num > 1)
     {
-        for (int i = 0; i <= num - 3; ++i)
+        for (int i = 0; i <= num - 2; ++i)
         {
             k = i + 1;
-            while ((k <= num - 2) && (pow((double)s[k].y - (double)s[i].y, 2) < dd)) //I changed this from the book
+            while ((k <= num - 1) && (pow((double)s[k].y - (double)s[i].y, 2) < dd)) //I changed this from the book
             {
                 increment_data.curr_operations++;
                 double distance = pow((s[k].x - s[i].x), 2) + pow((s[k].y - s[i].y), 2);
