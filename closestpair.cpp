@@ -56,12 +56,7 @@ result_type dc_cp(const vector<point> &p, const vector<point> &q, info increment
     int size = increment_data.end_pos - increment_data.start_pos;
     if (size <= 3)
     {
-        result_type resusts = bf_cp(p, increment_data);
-        if (resusts.distance == 0)
-        {
-            cout << resusts.distance << endl;
-        }
-        return resusts;
+        return bf_cp(p, increment_data);
     }
     int midpoint = (increment_data.end_pos - size / 2);
     //new y vector 1
@@ -91,7 +86,6 @@ result_type dc_cp(const vector<point> &p, const vector<point> &q, info increment
     int num = 0;
     for (auto iter : q)
     {
-        increment_data.curr_operations++;
         if (abs(iter.x - m) < d)
         {
             s.push_back(iter);
