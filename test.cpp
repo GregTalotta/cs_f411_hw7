@@ -22,7 +22,6 @@ int main()
     cout << "The correct answer is: 1.414214   You got: " << thing << "    brute force got: " << answer << endl;
     cout << endl
          << "random time" << endl;
-    cout << "the data set is...:" << endl;
     srand(time(NULL));
     vector<point> random;
     for (int i = 0; i < 10000; ++i) // handle lots of data points
@@ -30,6 +29,8 @@ int main()
         random.push_back({rand() % 100000, rand() % 100000});
     }
     vector<point>::iterator it = std::unique(random.begin(), random.end(), compare);
+    random.resize(std::distance(random.begin(),it));
+    cout << "# of points: " << random.size() << endl;
     thing = printRetClosestPair(random);
     answer = brute_force_cp(random);
     cout << "you got: " << thing << "    brute force got: " << answer << endl;
