@@ -36,22 +36,27 @@ bool compare_y(const point &n1, const point &n2)
     return n1.y < n2.y;
 }
 
+result_type bf_cp(const vector<point> &data, info increment_data)
+{
+    double d = std::numeric_limits<double>::max();
+    for (int i = increment_data.start_pos; i < increment_data.end_pos - 1; ++i)
+    {
+        for (int j = i + 1; j < increment_data.end_pos; ++j)
+        {
+            increment_data.curr_operations++;
+            d = min(d, sqrt(pow(((double)data[i].x - (double)data[j].x), 2) + pow(((double)data[i].y - (double)data[j].y), 2)));
+        }
+    }
+    return {d, increment_data.curr_operations};
+}
+
 // more or less the function from the book
-result_type ClosestPairLong(const vector<point> &p, const vector<point> &q, info increment_data)
+result_type dc_cp(const vector<point> &p, const vector<point> &q, info increment_data)
 {
     int size = increment_data.end_pos - increment_data.start_pos;
     if (size <= 3)
     {
-        double d = std::numeric_limits<double>::max();
-        for (int i = increment_data.start_pos; i < increment_data.end_pos - 1; ++i)
-        {
-            for (int j = i + 1; j < increment_data.end_pos; ++j)
-            {
-                increment_data.curr_operations++;
-                d = min(d, sqrt(pow(((double)p[i].x - (double)p[j].x), 2) + pow(((double)p[i].y - (double)p[j].y), 2)));
-            }
-        }
-        return {d, increment_data.curr_operations};
+        return bf_cp(p, increment_data);
     }
     int midpoint = increment_data.end_pos - size / 2;
     //new y vector 1
@@ -71,8 +76,8 @@ result_type ClosestPairLong(const vector<point> &p, const vector<point> &q, info
     //recursive calls
     info new_1 = {increment_data.start_pos, midpoint, increment_data.curr_operations};
     info new_2 = {midpoint, increment_data.end_pos, increment_data.curr_operations};
-    result_type d_1 = ClosestPairLong(p, q_1, new_1);
-    result_type d_2 = ClosestPairLong(p, q_2, new_2);
+    result_type d_1 = dc_cp(p, q_1, new_1);
+    result_type d_2 = dc_cp(p, q_2, new_2);
     //the rest
     double d = min(d_1.distance, d_2.distance);
     double dd = pow(d, 2);
@@ -90,10 +95,10 @@ result_type ClosestPairLong(const vector<point> &p, const vector<point> &q, info
     int k = 0;
     for (int i = 0; i <= num - 2; ++i)
     {
-       for(k = i +1; ((k <= num - 1) && (pow((double)s[k].y - (double)s[i].y, 2) < dd)); ++ k) //I changed this from the book
+        for (k = i + 1; ((k <= num - 1) && (pow((double)s[k].y - (double)s[i].y, 2) < dd)); ++k) //I changed this from the book
         {
             increment_data.curr_operations++;
-            double distance = pow(((double)s[k].x - (double)s[i].x),2) + pow(((double)s[k].y - (double)s[i].y),2);
+            double distance = pow(((double)s[k].x - (double)s[i].x), 2) + pow(((double)s[k].y - (double)s[i].y), 2);
             dd = min(distance, dd);
         }
     }
@@ -101,40 +106,45 @@ result_type ClosestPairLong(const vector<point> &p, const vector<point> &q, info
 }
 
 // jumper function
-result_type ClosestPairRet(vector<point> &data)
+result_type dc_cp_jumper_func(vector<point> &data)
 {
     vector<point> q = data;
     sort(data.begin(), data.end(), compare_x);
     sort(q.begin(), q.end(), compare_y);
-    result_type answer = ClosestPairLong(data, q, {0, (int)data.size(), 0});
+    result_type answer = dc_cp(data, q, {0, (int)data.size(), 0});
     return answer;
 }
 
 //************************* end internal functions ***************************
 
 // normal
-double ClosestPair(std::vector<point> data)
+double closestPair(std::vector<point> data)
 {
-    return ClosestPairRet(data).distance;
+    return dc_cp_jumper_func(data).distance;
 }
 
 // prints the number of operations.
-void PrintClosestPair(std::vector<point> data)
+void printClosestPair(std::vector<point> data)
 {
-    result_type info = ClosestPairRet(data);
+    result_type info = dc_cp_jumper_func(data);
     cout << "It did " << info.operations << " operations." << endl;
 }
 
 // prints and return a value... so side effects
-double PrintRetClosestPair(std::vector<point> data)
+double printRetClosestPair(std::vector<point> data)
 {
-    result_type info = ClosestPairRet(data);
+    result_type info = dc_cp_jumper_func(data);
     cout << "It did " << info.operations << " operations." << endl;
     return info.distance;
 }
 
 // returns the number of operations.
-int ClosestPairOperations(std::vector<point> data)
+int closestPairOperations(std::vector<point> data)
 {
-    return ClosestPairRet(data).operations;
+    return dc_cp_jumper_func(data).operations;
+}
+
+double brute_force_cp(std::vector<point> data)
+{
+    return bf_cp(data, {0, (int)data.size(), 0}).distance;
 }

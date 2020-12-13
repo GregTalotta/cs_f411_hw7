@@ -10,9 +10,11 @@ struct point
     int y;
 };
 
-double ClosestPair(std::vector<point> data);
-void PrintClosestPair(std::vector<point> data);
-int ClosestPairOperations(std::vector<point> data);
-double PrintRetClosestPair(std::vector<point> data);
+double closestPair(std::vector<point> data);
+void printClosestPair(std::vector<point> data);
+int closestPairOperations(std::vector<point> data);
+double printRetClosestPair(std::vector<point> data);
+
+double brute_force_cp(std::vector<point> data);
 
 #endif //#ifndef FILE_CLOSESTPAIR_H_INCLUDED

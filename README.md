@@ -24,13 +24,13 @@ struct point
 };
 ```
 
-1. ClosestPair()
+1. closestPair()
     1. Returns a double that is the distance between the closest pair.
-1. PrintClosestPair()
+1. printClosestPair()
     1. Returns nothing, but prints the number of operations done.
-1. ClosestPairOperations()
+1. closestPairOperations()
     1. Returns an int that is the number of operations done.
-1. PrintRetClosestPair()
+1. printRetClosestPair()
     1. Prints the number of operations and returns the distance.
 
 # Use my Testing File
