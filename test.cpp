@@ -20,8 +20,6 @@ int main()
     double thing = printRetClosestPair(my_data);
     double answer = brute_force_cp(my_data);
     cout << "The correct answer is: 1.414214   You got: " << thing << "    brute force got: " << answer << endl;
-    // I need more testing data, and I am not calculating it by hand...
-    // I guess I can write a brute force and compare the answers.
     cout << endl
          << "random time" << endl;
     cout << "the data set is...:" << endl;
@@ -30,7 +28,6 @@ int main()
     for (int i = 0; i < 10000; ++i)
     {
         random.push_back({rand() % 100000, rand() % 100000});
-        //cout << i << "(" << random[i].x <<"," << random[i].y << ")" << endl;
     }
     vector<point>::iterator it = std::unique(random.begin(), random.end(), compare);
     thing = printRetClosestPair(random);
