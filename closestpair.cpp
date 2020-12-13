@@ -12,13 +12,13 @@ using std::sqrt;
 using std::vector;
 
 // *******************internal use functions***************
-struct ret
+struct result_type
 {
     double distance;
     int operations;
 };
 
-struct input
+struct info
 {
     int start_pos = 0;
     int end_pos = -1;
@@ -36,48 +36,48 @@ bool compare_y(const point &n1, const point &n2)
 }
 
 // more or less the function from the book
-ret ClosestPairLong(const vector<point> &p, const vector<point> &q, input stuff)
+result_type ClosestPairLong(const vector<point> &p, const vector<point> &q, info increment_data)
 {
-    int size = stuff.end_pos - stuff.start_pos;
+    int size = increment_data.end_pos - increment_data.start_pos;
     if (size <= 3)
     {
         double d = 1000000000000000000.0; //ok not the best way to do it.
-        for (int i = stuff.start_pos; i < stuff.end_pos - 1; ++i)
+        for (int i = increment_data.start_pos; i < increment_data.end_pos - 1; ++i)
         {
-            for (int j = i + 1; j < stuff.end_pos; ++j)
+            for (int j = i + 1; j < increment_data.end_pos; ++j)
             {
-                stuff.curr_operations++;
+                increment_data.curr_operations++;
                 d = min(d, sqrt(pow((p[i].x - p[j].x), 2) + pow((p[i].y - p[j].y), 2)));
             }
         }
-        return {d, stuff.curr_operations};
+        return {d, increment_data.curr_operations};
     }
-    int midpoint = stuff.end_pos - size / 2;
+    int midpoint = increment_data.end_pos - size / 2;
     //new y vector 1
     vector<point> q_1;
-    for (int i = stuff.start_pos; i < midpoint; ++i)
+    for (int i = increment_data.start_pos; i < midpoint; ++i)
     {
         q_1.push_back(p[i]);
     }
     sort(q_1.begin(), q_1.end(), compare_y);
     //new y vector 2
     vector<point> q_2;
-    for (int i = midpoint; i < stuff.end_pos; ++i)
+    for (int i = midpoint; i < increment_data.end_pos; ++i)
     {
         q_2.push_back(p[i]);
     }
     sort(q_2.begin(), q_2.end(), compare_y);
     //recursive calls
-    input new_1 = {stuff.start_pos, midpoint, stuff.curr_operations};
-    input new_2 = {midpoint, stuff.end_pos, stuff.curr_operations};
-    ret d_1 = ClosestPairLong(p, q_1, new_1);
-    ret d_2 = ClosestPairLong(p, q_2, new_2);
+    info new_1 = {increment_data.start_pos, midpoint, increment_data.curr_operations};
+    info new_2 = {midpoint, increment_data.end_pos, increment_data.curr_operations};
+    result_type d_1 = ClosestPairLong(p, q_1, new_1);
+    result_type d_2 = ClosestPairLong(p, q_2, new_2);
     //the rest
     double d = min(d_1.distance, d_2.distance);
     double dd = pow(d, 2);
     int x_of_mid = p[midpoint].x;
     vector<point> s;
-    for (int i = stuff.start_pos; i < stuff.end_pos; ++i)
+    for (int i = increment_data.start_pos; i < increment_data.end_pos; ++i)
     {
         if (abs(q[i].x - x_of_mid) < d)
         {
@@ -90,16 +90,16 @@ ret ClosestPairLong(const vector<point> &p, const vector<point> &q, input stuff)
         k = i + 1;
         while ((k <= s.size() - 1) && (pow(s[k].y - s[i].y, 2) < dd))
         {
-            stuff.curr_operations++;
+            increment_data.curr_operations++;
             dd = min(((double)s[k].x - (double)s[i].x) + ((double)s[k].y - (double)s[i].y), dd);
             ++k;
         }
     }
-    return {sqrt(dd), d_1.operations + d_2.operations + stuff.curr_operations};
+    return {sqrt(dd), d_1.operations + d_2.operations + increment_data.curr_operations};
 }
 
 // jumper function
-ret ClosestPairRet(vector<point> &data)
+result_type ClosestPairRet(vector<point> &data)
 {
     vector<point> q = data;
     sort(data.begin(), data.end(), compare_x);
@@ -118,14 +118,14 @@ double ClosestPair(std::vector<point> data)
 // prints the number of operations.
 void PrintClosestPair(std::vector<point> data)
 {
-    ret info = ClosestPairRet(data);
+    result_type info = ClosestPairRet(data);
     cout << "It did " << info.operations << " operations." << endl;
 }
 
 // prints and return a value... so side effects
 double PrintRetClosestPair(std::vector<point> data)
 {
-    ret info = ClosestPairRet(data);
+    result_type info = ClosestPairRet(data);
     cout << "It did " << info.operations << " operations." << endl;
     return info.distance;
 }
