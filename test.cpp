@@ -25,7 +25,7 @@ int main()
     cout << "the data set is...:" << endl;
     srand(time(NULL));
     vector<point> random;
-    for (int i = 0; i < 10000; ++i)
+    for (int i = 0; i < 10000; ++i) // handle lots of data points
     {
         random.push_back({rand() % 100000, rand() % 100000});
     }
