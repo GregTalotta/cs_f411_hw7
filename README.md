@@ -32,6 +32,8 @@ struct point
     1. Returns an int that is the number of operations done.
 1. printRetClosestPair()
     1. Prints the number of operations and returns the distance.
+1. brute_force_cp()
+    1. Returns the distance by brute force
 
 # Use my Testing File
 
