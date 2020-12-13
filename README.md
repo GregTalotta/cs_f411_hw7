@@ -12,7 +12,7 @@ Education. Kindle Edition.
 ## How to Use
 
 First add the .cpp and .h to your project folder. Then include the header in
-your file. Call one of the four functions with a vector of points. Point is a
+your file. Call one of the five functions with a vector of points. Point is a
 struct that has an int for x, and an int for y. It does not modify the original
 data.
 
