@@ -56,9 +56,14 @@ result_type dc_cp(const vector<point> &p, const vector<point> &q, info increment
     int size = increment_data.end_pos - increment_data.start_pos;
     if (size <= 3)
     {
-        return bf_cp(p, increment_data);
+        result_type resusts = bf_cp(p, increment_data);
+        if (resusts.distance == 0)
+        {
+            cout << resusts.distance << endl;
+        }
+        return resusts;
     }
-    int midpoint = increment_data.end_pos - size / 2;
+    int midpoint = (increment_data.end_pos - size / 2);
     //new y vector 1
     vector<point> q_1;
     for (int i = increment_data.start_pos; i < midpoint; ++i)
@@ -81,6 +86,7 @@ result_type dc_cp(const vector<point> &p, const vector<point> &q, info increment
     //the rest
     double d = min(d_1.distance, d_2.distance);
     int m = p[midpoint].x;
+    double dd = pow(d, 2);
     vector<point> s;
     int num = 1;
     for (auto iter : q)
@@ -92,17 +98,19 @@ result_type dc_cp(const vector<point> &p, const vector<point> &q, info increment
             ++num;
         }
     }
-    double dd = pow(d, 2);
     int k = 0;
-    for (int i = 0; i <= num - 2; ++i)
+    if (num > 1)
     {
-        k = i + 1;
-        while ((k <= num - 1) && (pow((double)s[k].y - (double)s[i].y, 2) < dd)) //I changed this from the book
+        for (int i = 0; i <= num - 3; ++i)
         {
-            increment_data.curr_operations++;
-            double distance = pow((s[k].x - s[i].x), 2) + pow((s[k].y - s[i].y), 2);
-            dd = min(distance, dd);
-            ++k;
+            k = i + 1;
+            while ((k <= num - 2) && (pow((double)s[k].y - (double)s[i].y, 2) < dd)) //I changed this from the book
+            {
+                increment_data.curr_operations++;
+                double distance = pow((s[k].x - s[i].x), 2) + pow((s[k].y - s[i].y), 2);
+                dd = min(distance, dd);
+                ++k;
+            }
         }
     }
     return {sqrt(dd), d_1.operations + d_2.operations + increment_data.curr_operations};
